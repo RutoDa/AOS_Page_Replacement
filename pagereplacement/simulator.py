@@ -39,7 +39,6 @@ class Simulator:
         disk_writes = []
         
         # Run the algorithm for different frame counts.
-        tqdm.write('-'*50)
         tqdm.write(f'Running {algorithm.__name__} algorithm...')
         for frame_count in tqdm(range(10, max_frame_count + 1, interval)):
             evaluator.compute(num_of_frames=frame_count)
@@ -57,6 +56,6 @@ class Simulator:
             "Disk Writes": disk_writes,
         }
         df = pd.DataFrame.from_dict(data).set_index("Frame Count")
-        print(df)
+        # print(df)
         return df
  
