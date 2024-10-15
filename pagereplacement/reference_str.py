@@ -27,7 +27,7 @@ class ReferenceStr:
             raise ValueError("The length of the reference string is too short.")
 
     def generate_reference_str(
-        self, type, locality_range_min=25, locality_range_max=100
+        self, type, locality_range_min=25, locality_range_max=50
     ):
         """
         Generate reference string based on the type.
@@ -42,8 +42,10 @@ class ReferenceStr:
             self.reference_str = self.locality_reference_str(
                 locality_range_min, locality_range_max
             )
-        elif type == "my_reference_string":
-            self.reference_str = self.my_reference_string()
+        elif type == "hybrid":
+            self.reference_str = self.hybrid_reference_str(
+                locality_range_min, locality_range_max
+            )
 
     def random_reference_str(self):
         """Arbitrarily pick one number for each reference.
@@ -53,7 +55,7 @@ class ReferenceStr:
         """
         return [random.randint(self.min, self.max) for _ in range(self.length)]
 
-    def locality_reference_str(self, locality_range_min=25, locality_range_max=100):
+    def locality_reference_str(self, locality_range_min=25, locality_range_max=50):
         """Simulate procedure calls.
 
         The reference string length of each procedure call accounts for 1/200-1/100 of the
@@ -76,13 +78,36 @@ class ReferenceStr:
 
         return reference_str
 
-    def my_reference_string(self):
-        """_summary_
+    def hybrid_reference_str(self, locality_range_min=25, locality_range_max=50):
+        """My reference string - Hybrid reference string(50% locality, 50% random).
+        
+        The reference string length of each procedure call or random string accounts for 1/200-1/100 of the
+        overall reference string length.(each length of procedure call or random string is random)
 
         Returns:
-            _type_: _description_
+            list: reference string
         """
-        pass
+        index = 0
+        reference_str = []
+        
+        while len(reference_str) < self.length:
+            length = random.randint(self.length // 200, self.length // 100)
+            if index % 2:
+                locality_range = random.randint(locality_range_min, locality_range_max)
+                base_page = random.randint(self.min, self.max)
+
+                reference_str += [
+                    random.randint(base_page, min(base_page + locality_range, self.max))
+                    for _ in range(min(length, self.length - len(reference_str)))
+                ]
+            else:
+                reference_str += [
+                    random.randint(self.min, self.max) 
+                    for _ in range(min(length, self.length - len(reference_str)))
+                ]
+
+            index += 1
+        return reference_str
 
     def get_reference_str(self):
         return self.reference_str.copy()
