@@ -3,7 +3,7 @@
 > - Homework requirement: [Advanced Operating Systems - Homework 1](results/report/Requirement.pdf)
 
 ## 實驗結果
-- 可參考書面報告：[實驗結果](results/report/README.md)
+- 可參考書面報告：[實驗結果](results/report/Report.pdf)
 
 ## 環境需求
 - matplotlib, pandas, tqdm
